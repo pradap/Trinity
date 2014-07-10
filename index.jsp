@@ -20,6 +20,53 @@
 	rel=stylesheet>
 <script src="http://i4.walmartimages.com/js/rollups/pageTop.jsp"></script>
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<style>
+a.morelink {
+    text-decoration:none;
+    outline: none;
+}
+.morecontent span {
+    display: none;
+}
+.comment {
+}
+</style>
+<script>
+$(document).ready(function() {
+    var showChar = 100;
+    var ellipsestext = "...";
+    var moretext = "more";
+    var lesstext = "less";
+    $('.more').each(function() {
+        var content = $(this).html();
+ 
+        if(content.length > showChar) {
+ 
+            var c = content.substr(0, showChar);
+            var h = content.substr(showChar-1, content.length - showChar);
+ 
+            var html = c + '<span class="moreellipses">' + ellipsestext+ '&nbsp;</span><span class="morecontent"><span>' + h + '</span>&nbsp;&nbsp;<a href="" class="morelink">' + moretext + '</a></span>';
+ 
+            $(this).html(html);
+        }
+ 
+    });
+ 
+    $(".morelink").click(function(){
+        if($(this).hasClass("less")) {
+            $(this).removeClass("less");
+            $(this).html(moretext);
+        } else {
+            $(this).addClass("less");
+            $(this).html(lesstext);
+        }
+        //$(this).parent().prev.parent.prev.toggle('slow');
+    $(this).parent().prev().toggle();
+        $(this).prev().toggle();
+        return false;
+    });
+});
+</script>
 </head>
 
 <body>
@@ -167,12 +214,12 @@
                                     
                                         
                                         <% if(origsearch.equalsIgnoreCase("the racketeer")) {%>
-		                                <div style=" margin-top: 0px; color: rgb(153, 153, 153); font-size: 13px; margin-top: 2px;">
+		                                <div style=" margin-top: 0px; color: rgb(153, 153, 153); font-size: 13px; font-weight:500;margin-top: 2px;">
                                             <span style="padding-right: 5px;"> Author of The Racketeer </span> <br>
                                             <span style="padding-right: 5px;"> Genres: <a href=<%=thrillerlink%> target="_blank" title="Best selling books in Literature&Fiction genre"> Literature&Fiction </a>, <a href=<%=mysterylink%> target="_blank" title="Best selling books in Suspense&Mystery genre"> Suspense&Mystery  </a></span>
                                         </div>
                                         <%} else  {%>
-		                                <div style=" margin-top: 4px; color: rgb(153, 153, 153); font-size: 13px; margin-top: 2px;">
+		                                <div style=" margin-top: 4px; color: rgb(153, 153, 153); font-size: 13px; font-weight:500; margin-top: 2px;">
                                             <span style="padding-right: 5px;"> Genres: <a href=<%=thrillerlink%> target="_blank" title="Best selling books in Literature&Fiction genre"> Literature&Fiction </a>, <a href=<%=mysterylink%> target="_blank" title="Best selling books in Suspense&Mystery genre"> Suspense&Mystery, <a href=<%=humorlink%> title="Best selling books in Comedy genre" target="_blank"> Comedy </a></span>
                                         </div>
                                         <%}%>
@@ -198,16 +245,8 @@
                                 } 
                             
                             %>
-		                        <div style="margin: 5px 0px 13px;">
-		                           <span> <%=smallDesc%>
-		                                <span
-		                                <% 
-                                        String uri="#";
-		                                if(objAI.getWikiURI().length > 0) {
-			                            uri = objAI.getWikiURI()[0];%>
-		                             <% } %>
-			                         style="white-space: nowrap; overflow: hidden; color: rgb(153, 153, 153); font-size: 11px;"> <a href= <%=uri %>  target="_blank"> more </a></span>
-		                             </span>
+		                        <div class="more"> 
+                                    <%=smallDesc%>
                                  
 		                        </div>
 
@@ -217,10 +256,11 @@
                             <% String searchqueryprefix="http://www.walmart.com/search/search-ng.do?search_constraint=3920&search_query="; %>
                             <div style="font-size: 16px; margin-top:17px"> 
                                 <% String allbooksbyauthor = searchqueryprefix+"john+grisham"; %>
-                                Best selling books from Walmart <a style="white-space: nowrap; overflow: hidden; color: rgb(153, 153, 153); font-size: 11px;" href=<%=allbooksbyauthor%> target="_blank"> [ see all ] </a>
+                                Best selling books <a style="white-space: nowrap; overflow: hidden; color: rgb(153, 153, 153); font-size: 11px;" href=<%=allbooksbyauthor%> target="_blank"> [ see all ] </a>
                             </div>
+
                             <div style="">
-                                <table>
+                                <table cellpadding=0 cellspacing=0>
                                     <tr border="0">
                                         <%String book_link = searchqueryprefix+"a+time+to+kill+john+grisham";%>
                                         <td style="padding:5px"><a href=<%=book_link%> target="_blank"> <img src="./JohnGrishamATimeToKill.png" alt="A Time to Kill" title="A Time to Kill" border="0" height="110" width="72"> </a>
@@ -242,25 +282,91 @@
                                     </tr>
                                     <tr>
                                         <%book_link = searchqueryprefix+"a+time+to+kill+john+grisham";%>
-                                        <td style="text-align:center; padding:5px; width:72"> <a href=<%=book_link%> target="_blank" title="A Time to Kill" style="font-size: 12px"> A Time to Kill</a>
+                                        <td style="text-align:center; padding:5px; width:72"> <a href=<%=book_link%> target="_blank" title="A Time to Kill" style="font-size: 11px"> A Time to Kill</a>
                                         </td>
                                         <%book_link = searchqueryprefix+"the+pelican+brief+john+grisham";%>
-                                        <td style="text-align:center; padding:5px; width:72"><a href=<%=book_link%> target="_blank" title="The Pelican Brief" style="font-size: 12px">The Pelican Brief</a>
+                                        <td style="text-align:center; padding:5px; width:72"><a href=<%=book_link%> target="_blank" title="The Pelican Brief" style="font-size: 11px">The Pelican Brief</a>
                                         </td>
                                         <%book_link = searchqueryprefix+"sycamore+row+john+grisham";%>
-                                        <td style="text-align:center; padding:5px; width:72" ><a href=<%=book_link%> target="_blank" title="Sycamore Row" style="font-size: 12px">Sycamore Row</a>
+                                        <td style="text-align:center; padding:5px; width:72" ><a href=<%=book_link%> target="_blank" title="Sycamore Row" style="font-size: 11px">Sycamore Row</a>
                                         </td>
                                         <%book_link = searchqueryprefix+"the+client+john+grisham";%>
-                                        <td style="text-align:center; padding:5px; width:72" ><a href=<%=book_link%> target="_blank" title="The Client" style="font-size: 12px"> The Client</a>
+                                        <td style="text-align:center; padding:5px; width:72" ><a href=<%=book_link%> target="_blank" title="The Client" style="font-size: 11px"> The Client</a>
                                         </td>
                                         <%book_link = searchqueryprefix+"the+street+lawyer+john+grisham";%>
-                                        <td style="text-align:center; padding:5px; width:72" ><a href="book_link" target="_blank" title="The Street Lawyer" style="font-size: 12px">The Street Lawyer</a>
+                                        <td style="text-align:center; padding:5px; width:72" ><a href=<%=book_link%> target="_blank" title="The Street Lawyer" style="font-size: 11px">The Street Lawyer</a>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+                            <!-- Books from related authors --!>
+                            <div style="font-size: 16px; margin-top:17px"> 
+                                Best selling books from authors like John Grisham  
+
+
+                            </div>
+                            <div style="">
+                                <table cellpadding=0 cellspacing=0>
+                                    <tr border="0">
+                                        <%book_link = searchqueryprefix+"invisible+james+patterson";%>
+                                        <td style="padding:5px"><a href=<%=book_link%> target="_blank"> <img src="./JamesPattersonInvisible.png" alt="Invisible" title="Invisible" border="0" height="110" width="72"> </a>
+                                        </td>
+                                        <%book_link = searchqueryprefix+"inferno+dan+brown";%>
+                                        <td style="padding:5px"><a href=<%=book_link%> target="_blank"><img src="./DanBrownInferno.png" alt="Inferno" title="Inferno" border="0" height="110" width="72"></a>
+                                        </td>
+                                        <%book_link = searchqueryprefix+"dark+witch+nora+roberts";%>
+                                        <td style="padding:5px"><a href=<%=book_link%> target="_blank"> <img src="./NorabRobertsDarkWitch.png" alt="Dark Witch" title="Dark Witch" border="0" height="110" width="72"></a>
+                                    </td> 
+                                        <%book_link = searchqueryprefix+"the+forgottern+david+baldacci";%>
+                                        <td style="padding:5px"> <a href=<%=book_link%> target="_blank"> <img src="./DavidBaldacciTheForgotten.png" alt="The Forgotten" title="The Forgotten" border="0" height="110" width="72"> </a>
+                                        </td>
+                                        <%book_link = searchqueryprefix+"red+rabbit+tom+clancy";%>
+                                        <td style="padding:5px" ><a href="<%=book_link%>" target="_blank" > <img src="./TomClancyRedRabbit.png" alt="Red Rabbit" title="Red Rabbit" border="0" height="110" width="72"> </a>
+                                        </td>
+
+
+                                    </tr>
+                                    <tr>
+                                        <%book_link = searchqueryprefix+"invisible+james+patterson";%>
+                                        <td style="text-align:center; padding:5px; width:72; height:10"> <a href=<%=book_link%> target="_blank" title="Invisible" style="font-size: 11px"> Invisible</a>
+                                        </td>
+                                        <%book_link = searchqueryprefix+"inferno+dan+brown";%>
+                                        <td style="text-align:center; padding:5px; width:72; height:10"><a href=<%=book_link%> target="_blank" title="Inferno" style="font-size: 11px">Inferno</a>
+                                        </td>
+                                        <%book_link = searchqueryprefix+"dark+witch+nora+roberts";%>
+                                        <td style="text-align:center; padding:5px; width:72;height:10" ><a href=<%=book_link%> target="_blank" title="Dark Witch" style="font-size: 11px">Dark Witch</a>
+                                        </td>
+                                        <%book_link = searchqueryprefix+"the+forgotten+david+baldacci";%>
+                                        <td style="text-align:center; padding:5px; width:72;height:10" ><a href=<%=book_link%> target="_blank" title="The Forgotten" style="font-size: 11px"> The Forgotten</a>
+                                        </td>
+                                        <%book_link = searchqueryprefix+"red+rabbit+tom+clancy";%>
+                                        <td style="text-align:center; padding:5px; width:72;height:10" ><a href=<%=book_link%> target="_blank" title="Red Rabbit" style="font-size: 11px">Red Rabbit</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <%book_link = searchqueryprefix+"james+patterson";%>
+                                        <td style="text-align:center; padding:5px; width:72"> <a href=<%=book_link%> target="_blank" title="James Patterson" style="color: rgb(25, 71, 209); font-size: 12px; font-weight: bold;"> James Patterson</a>
+                                        </td>
+                                        <%book_link = searchqueryprefix+"dan+brown";%>
+                                        <td style="text-align:center; padding:5px; width:72"><a href=<%=book_link%> target="_blank" title="Dan Brown" style="color: rgb(25, 71, 209); font-weight: bold; font-size: 12px">Dan Brown</a>
+                                        </td>
+                                        <%book_link = searchqueryprefix+"nora+roberts";%>
+                                        <td style="text-align:center; padding:5px; width:72" ><a href=<%=book_link%> target="_blank" title="Nora Roberts" style="color: rgb(25, 71, 209); font-weight:bold;font-size: 12px">Nora Roberts</a>
+                                        </td>
+                                        <%book_link = searchqueryprefix+"david+baldacci";%>
+                                        <td style="text-align:center; padding:5px; width:72" ><a href=<%=book_link%> target="_blank" title="David Baldacci" style="color: rgb(25, 71, 209); font-weight:bold; font-size: 12px"> David Baldacci</a>
+                                        </td>
+                                        <%book_link = searchqueryprefix+"tom+clancy";%>
+                                        <td style="text-align:center; padding:5px; width:72" ><a href=<%=book_link%> target="_blank" title="Tom Clancy" style="color: rgb(25, 71, 209); font-weight:bold;font-size: 12px">Tom Clancy</a>
                                         </td>
                                     </tr>
                                 </table>
 
                             </div>
 
+
+                            <br>
 
         <% if(objAI.getMovies() != null &&  objAI.getMovies().length > 0) { 
             String booklinkprefix = "http://www.walmart.com/search/search-ng.do?search_constraint=4096&search_query=";
@@ -272,7 +378,7 @@
 		<div>
 		<div style="padding: 10px 0px 0px;"><span
 			style=";"> <a
-                style="color: rgb(34, 34, 34); font-size: 16px;"> Best selling movie adaptions from Walmart</a></span><a style="white-space: nowrap; overflow: hidden; color: rgb(153, 153, 153); font-size: 11px;" href=<%=allmoviesbyauthor%> target="_blank"> [ see all ] </a>
+                style="color: rgb(34, 34, 34); font-size: 16px;"> Best selling movie adaptions of John Grisham</a></span><a style="white-space: nowrap; overflow: hidden; color: rgb(153, 153, 153); font-size: 11px;" href=<%=allmoviesbyauthor%> target="_blank"> [ see all ] </a>
             
     <br>
     <div style="margin-top:5px">
