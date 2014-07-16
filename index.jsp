@@ -33,7 +33,7 @@ a.morelink {
 </style>
 <script>
 $(document).ready(function() {
-    var showChar = 100;
+    var showChar = 154;
     var ellipsestext = "...";
     var moretext = "more";
     var lesstext = "less";
@@ -42,7 +42,7 @@ $(document).ready(function() {
  
         if(content.length > showChar) {
  
-            var c = content.substr(0, showChar);
+            var c = content.substr(0, showChar-1);
             var h = content.substr(showChar-1, content.length - showChar);
  
             var html = c + '<span class="moreellipses">' + ellipsestext+ '&nbsp;</span><span class="morecontent"><span>' + h + '</span>&nbsp;&nbsp;<a href="" class="morelink">' + moretext + '</a></span>';
@@ -62,7 +62,7 @@ $(document).ready(function() {
         }
         //$(this).parent().prev.parent.prev.toggle('slow');
     $(this).parent().prev().toggle();
-        $(this).prev().toggle();
+        $(this).prev().toggle('slow');
         return false;
     });
 });
@@ -70,6 +70,9 @@ $(document).ready(function() {
 </head>
 
 <body>
+    <%
+    session = request.getSession();
+    %>
     <div id=wmHomePageWrapper></div> <!-- blue strip in first page -->
 
     <header class=wmHeader> <!-- formatting -->
@@ -125,12 +128,15 @@ $(document).ready(function() {
             </li>
         </ul>
         </nav>
+        <% String temp = (String)session.getAttribute("searchstring"); %>
+
+
         <form class=searchBox>
             <span class=add-on> 
                 <select class=selectBox onchange="document.searchbox.search_constraint.value = this.options[this.selectedIndex].value">
                 </select> 
             </span>
-            <div id=TypeAhead class=yui-ac><input id=searchText value=Search onfocus="if (this.value.length) { this.value='';}" onblur="if (this.value=='') { this.value='Search';};" name=auth_search tabindex=1>
+            <div ><input id=searchText value="<%=temp%>" name=auth_search tabindex=1>
             </div>
             <input type=submit href="#" class="bigGoButton searchIcon" value=Go>
         </form>
@@ -144,7 +150,9 @@ $(document).ready(function() {
 	    <div id="container" >
 	
 				
-	    <%  String authorName = request.getParameter("auth_search"); %> 
+            <%  String authorName = request.getParameter("auth_search"); 
+                session.setAttribute("searchstring", authorName);
+            %> 
         <% if(authorName != null && authorName.length() != 0) { %>
 	    <%  String resStatus = null; 
 
@@ -179,7 +187,7 @@ $(document).ready(function() {
 		</div>
 
 	
-	    <div style="width: 350px; float: left; margin-left:50px">
+	    <div style="width: 350px; float: left; margin-left:50px;margin-top:15px">
 	        <ol style="margin: 0px; padding: 0px; border: 0px; color: rgb(34, 34, 34); font-family: arial, sans-serif; font-size: 13px; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: 15px; orphans: auto; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255);">
 		        <div style="border: none; line-height: 1.24; margin-top: 15px; position: relative; padding: 0px 15px 15px; width: 424px; -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 4px; box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 4px; margin-left: 2px;">
 		            <div>
@@ -246,7 +254,12 @@ $(document).ready(function() {
                             
                             %>
 		                        <div class="more"> 
-                                    <%=smallDesc%>
+                                    <% String uri="#"; 
+                                    if(objAI.getWikiURI().length > 0) {
+                                        uri = objAI.getWikiURI()[0];
+                                        }
+                                        %>
+                                        <%=smallDesc%> <a href=<%=uri%> target="_blank"> wikipedia link</a> 
                                  
 		                        </div>
 
@@ -461,55 +474,6 @@ $(document).ready(function() {
 
 	</div>
 
-	<div style="width: 350px; float: left; margin-left:50px">
-	<br>
-	<ol
-		style="margin: 0px; padding: 0px; border: 0px; color: rgb(34, 34, 34); font-family: arial, sans-serif; font-size: 13px; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: 15px; orphans: auto; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255);">
-        <div
-
-        style="border: none; line-height: 1.24; margin-top: 6px; position: relative; padding: 0px 15px 15px; width: 424px; -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 4px; box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 4px; margin-left: 2px;">
-            <div>
-                <div>
-                    <div aria-level="5" style="margin: 0px 0px 5px; padding: 9px 0px 0px;">
-                        <a style="color: rgb(34, 34, 34); font-size:18px">Customers also searched for books by</a> 
-                    </div>
-                    <table >
-                        <tr>
-                            <%String authorsearchprefix="http://www.walmart.com/search/search-ng.do?search_constraint=4096&search_query=";%>
-                            <%String authorsearchlink = authorsearchprefix + "james+patterson";%>
-                            <td style="padding:13px"> <a href=<%=authorsearchlink%> target="_blank" title="James Patterson"><img src="./freebaseimages/James_Patterson.freebaseJson.1" alt="James Patterson" title="James Patterson" border="0" height="90" width="72"> </a>
-                            </td>
-                            <% authorsearchlink=authorsearchprefix+"dan+brown";%>
-                            <td style="padding:13px"> <a href=<%=authorsearchlink%> target="_blank" title="Dan Brown"> <img src="./freebaseimages/Dan_Brown.freebaseJson.1" alt="Dan Brown" title="Dan Brown" border="0" height="90" width="72"> </a>
-                            </td>
-                            <% authorsearchlink=authorsearchprefix+"nora+roberts";%>
-                            <td style="padding:13px"><a href=<%=authorsearchlink%> target="_blank" title="Nora Roberts" > <img src="./freebaseimages/Nora_Roberts.freebaseJson.1" alt="Nora Roberts" title="Nora Roberts" border="0" height="90" width="72"></a>
-                            </td>
-                            <% authorsearchlink=authorsearchprefix+"david+baldacci";%>
-                            <td style="padding:13px"><a href=<%=authorsearchlink%> target="_blank" title="David Baldacci"> <img src="./freebaseimages/David_Baldacci.freebaseJson.1" alt="David Baldacci" title="David Baldacci" border="0" height="90" width="72"> </a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <% authorsearchlink=authorsearchprefix+"james+patterson";%>
-                            <td style="padding:0px;width:72;text-align:center; "><a title="James Patterson" style="font-size: 12px" href=<%=authorsearchlink%> target="_blank"> James Patterson </a></td>
-                            <% authorsearchlink=authorsearchprefix+"dan+brown";%>
-                            <td style="padding:0px;width:72;text-align:center; "> <a title="Dan Brown" style="font-size: 12px" href=<%=authorsearchlink%> target="_blank"> Dan Brown </a></td>
-                            <% authorsearchlink=authorsearchprefix+"nora+roberts";%>
-                            <td style="padding:0px;width:72;text-align:center; "><a title="Nora Roberts" style="font-size: 12px" href=<%=authorsearchlink%> target="_blank"> Nora Roberts </a> </td> 
-                            <% authorsearchlink=authorsearchprefix+"david+baldacci";%>
-                            <td style="padding:0px;width:72;text-align:center; "><a title="David Baldacci" style="font-size: 12px" href=<%=authorsearchlink%> target="_blank"> David Baldacci </a></td> 
-                        </tr>
-                    </table>
-
-                </div>
-            </div>
-        </div>
-
-
-
-
-    </ol>
-    </div>
 	<%} else {%> <br>
 	<br>
 	<h3 class="text-info">
